@@ -8,7 +8,7 @@ Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
 # Source0-md5:	fd68e005609be10a1fa57b71082ebad9
 # Source0-size:	48577
-Source1:        %{name}.conf
+Source1:	%{name}.conf
 URL:		http://sourceforge.net/projects/phpmybackup/
 BuildRequires:	unzip
 Requires:	php
@@ -19,7 +19,7 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_mybackupdir	%{_datadir}/%{name}
-%define         _sysconfdir     /etc/%{name}
+%define		_sysconfdir	/etc/%{name}
 
 %description
 phpMyBackupPro is a web-based MySQL backup program, written in PHP.
@@ -41,7 +41,7 @@ konfiguracjê programu.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_mybackupdir} \
-        $RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd}
+	$RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd}
 
 cp -af %{name}.v.%{version}/* $RPM_BUILD_ROOT%{_mybackupdir}
 rm -f $RPM_BUILD_ROOT%{_mybackupdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf.php
