@@ -1,5 +1,5 @@
-Summary:	Web-based MySQL backup program, written in PHP.
-Summary(pl):	Oparty o PHP program do tworzenia kopi zapasowych baz MySQL.
+Summary:	Web-based MySQL backup program, written in PHP
+Summary(pl):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
 Version:	1.0
 Release:	1
@@ -9,6 +9,7 @@ Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
 # Source0-md5:	28f9c7465cf8da627a29dcb97c3eeeef
 Source1:        %{name}.conf
 URL:		http://sourceforge.net/projects/phpmybackup/
+Requires:	php
 Requires:	php-mysql
 Requires:	php-pcre
 Requires:	webserver
@@ -17,7 +18,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_mybackupdir	%{_datadir}/%{name}
 %define         _sysconfdir     /etc/%{name}
-
 
 %description
 phpMyBackupPro is a web-based MySQL backup program, written in PHP.
@@ -29,12 +29,12 @@ interface, an easy install and config and an online help..
 phpMyBackupPro to oparty o PHP program do tworzenia kopii zapasowych
 baz MySQL. Posiada wiele mo¿liwo¶ci takich jak: kolejkowanie,
 wysy³anie za pomoc± e-maila lub FTP, archiwizacja danych zawartych w
-bazie, struktury bazy lub obydwu. Wyposarzony zosta³ w bardzo
+bazie, struktury bazy lub obydwu. Wyposa¿ony zosta³ w bardzo
 przejrzysty i ³atwy w u¿yciu interfejs oraz intuicyjn± instalacjê i
 konfiguracjê programu.
 
 %prep
-%setup -q -c %{name}.v.%{version}
+%setup -q -c
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -85,8 +85,8 @@ fi
 %attr(640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/*
 %config(noreplace) %verify(not size mtime md5) /etc/httpd/%{name}.conf
 %dir %{_mybackupdir}
-%{_mybackupdir}/export/
-%{_mybackupdir}/language/
+%{_mybackupdir}/export
+%{_mybackupdir}/language
 %{_mybackupdir}/*.php
 %{_mybackupdir}/style.css
 %{_mybackupdir}/javascripts.js
