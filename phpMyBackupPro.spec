@@ -89,5 +89,5 @@ fi
 %{_mybackupdir}/export
 %{_mybackupdir}/language
 %{_mybackupdir}/*.php
-%{_mybackupdir}/stylesheets/*.css
+%{_mybackupdir}/stylesheets
 %{_mybackupdir}/javascripts.js
