@@ -5,7 +5,7 @@ Version:	1.0
 Release:	1
 License:	GPL
 Group:		Applications/WWW
-Source0:	http://unc.dl.sourceforge.net/sourceforge/phpmybackup/%{name}.v.%{version}.zip
+Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
 # Source0-md5:	28f9c7465cf8da627a29dcb97c3eeeef
 URL:		http://sourceforge.net/projects/phpmybackup/
 Requires:	php-mysql
