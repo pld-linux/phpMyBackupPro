@@ -2,13 +2,14 @@ Summary:	Web-based MySQL backup program, written in PHP
 Summary(pl):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
 Version:	1.0
-Release:	1
+Release:	2
 License:	GPL
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
 # Source0-md5:	28f9c7465cf8da627a29dcb97c3eeeef
 Source1:        %{name}.conf
 URL:		http://sourceforge.net/projects/phpmybackup/
+BuildRequires:	unzip
 Requires:	php
 Requires:	php-mysql
 Requires:	php-pcre
@@ -41,12 +42,12 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_mybackupdir} \
         $RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd}
 
-cp -af %{name}.v.%{version}/*	  $RPM_BUILD_ROOT%{_mybackupdir}
+cp -af %{name}.v.%{version}/* $RPM_BUILD_ROOT%{_mybackupdir}
 rm -f $RPM_BUILD_ROOT%{_mybackupdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf.php
 
 install %{name}.v.%{version}/global_conf.php %{name}.v.%{version}/config.php $RPM_BUILD_ROOT%{_sysconfdir}
-ln -sf %{_sysconfdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/config
-ln -sf %{_sysconfdir}/global_conf.php $RPM_BUILD_ROOT%{_mybackupdir}/gloval_conf.php
+ln -sf %{_sysconfdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/config.php
+ln -sf %{_sysconfdir}/global_conf.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf.php
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/httpd/%{name}.conf
 
@@ -80,7 +81,7 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc SHELL_MODE INSTALL
+%doc INSTALL SHELL_MODE
 %dir %{_sysconfdir}
 %attr(640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/*
 %config(noreplace) %verify(not size mtime md5) /etc/httpd/%{name}.conf
