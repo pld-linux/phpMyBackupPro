@@ -23,7 +23,7 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 phpMyBackupPro is a web-based MySQL backup program, written in PHP.
 You can schedule backups, email or upload them using FTP and backup
 your data or structure or both. It comes with an easy to use
-interface, an easy install and config and an online help..
+interface, an easy install and config and an online help.
 
 %description -l pl
 phpMyBackupPro to oparty o PHP program do tworzenia kopii zapasowych
