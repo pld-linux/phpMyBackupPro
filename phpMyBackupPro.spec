@@ -1,14 +1,14 @@
 Summary:	Web-based MySQL backup program, written in PHP
 Summary(pl):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
-Version:	1.2
+Version:	1.5
 Release:	1
 License:	GPL
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
-# Source0-md5:	ddcf7355b8d0564a27ca2965c3ba03a3
+# Source0-md5:	4d2fe3aab2b17d42328aceda9d793dd5
 Source1:	%{name}.conf
-URL:		http://sourceforge.net/projects/phpmybackup/
+URL:		http://www.phpmybackuppro.net/
 BuildRequires:	unzip
 Requires:	php
 Requires:	php-mysql
@@ -81,13 +81,16 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc INSTALL SHELL_MODE
+%doc documentation/{GNU\ GPL.txt,HISTORY.txt,SEVERAL_SERVERS.txt,SHELL_MODE.txt,UPGRADE.txt}
 %dir %{_sysconfdir}
-%attr(640,root,http) %config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/*
-%config(noreplace) %verify(not size mtime md5) /etc/httpd/%{name}.conf
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
+%config(noreplace) %verify(not md5 mtime size) /etc/httpd/%{name}.conf
 %dir %{_mybackupdir}
 %{_mybackupdir}/export
 %{_mybackupdir}/language
 %{_mybackupdir}/*.php
 %{_mybackupdir}/stylesheets
 %{_mybackupdir}/javascripts.js
+%dir %{_mybackupdir}/images
+%{_mybackupdir}/images/*.gif
+%{_mybackupdir}/images/logo.png
