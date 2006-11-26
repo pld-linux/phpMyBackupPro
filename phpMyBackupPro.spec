@@ -1,3 +1,5 @@
+# TODO
+# - webapps
 Summary:	Web-based MySQL backup program, written in PHP
 Summary(pl):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
@@ -10,10 +12,10 @@ Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
 Source1:	%{name}.conf
 URL:		http://www.phpmybackuppro.net/
 BuildRequires:	unzip
-Requires:	php
-Requires:	php-mysql
-Requires:	php-pcre
+Requires:	php(mysql)
+Requires:	php(pcre)
 Requires:	webserver
+Requires:	webserver(php)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
