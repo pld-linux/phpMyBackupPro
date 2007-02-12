@@ -1,7 +1,7 @@
 # TODO
 # - webapps
 Summary:	Web-based MySQL backup program, written in PHP
-Summary(pl):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
+Summary(pl.UTF-8):   Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
 Version:	1.5
 Release:	1
@@ -28,13 +28,13 @@ You can schedule backups, email or upload them using FTP and backup
 your data or structure or both. It comes with an easy to use
 interface, an easy install and config and an online help.
 
-%description -l pl
+%description -l pl.UTF-8
 phpMyBackupPro to oparty o PHP program do tworzenia kopii zapasowych
-baz MySQL. Posiada wiele mo¿liwo¶ci takich jak: kolejkowanie,
-wysy³anie za pomoc± e-maila lub FTP, archiwizacja danych zawartych w
-bazie, struktury bazy lub obydwu. Wyposa¿ony zosta³ w bardzo
-przejrzysty i ³atwy w u¿yciu interfejs oraz intuicyjn± instalacjê i
-konfiguracjê programu.
+baz MySQL. Posiada wiele moÅ¼liwoÅ›ci takich jak: kolejkowanie,
+wysyÅ‚anie za pomocÄ… e-maila lub FTP, archiwizacja danych zawartych w
+bazie, struktury bazy lub obydwu. WyposaÅ¼ony zostaÅ‚ w bardzo
+przejrzysty i Å‚atwy w uÅ¼yciu interfejs oraz intuicyjnÄ… instalacjÄ™ i
+konfiguracjÄ™ programu.
 
 %prep
 %setup -q -c
