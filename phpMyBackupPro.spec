@@ -22,10 +22,9 @@ BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_mybackupdir	%{_datadir}/%{name}
-%define         _webapps        /etc/webapps
-%define         _webapp         %{name}
-%define         _sysconfdir     %{_webapps}/%{_webapp}
-
+%define		_webapps		/etc/webapps
+%define		_webapp			%{name}
+%define		_sysconfdir		%{_webapps}/%{_webapp}
 
 %description
 phpMyBackupPro is a web-based MySQL backup program, written in PHP.
@@ -59,7 +58,6 @@ ln -sf %{_sysconfdir}/global_conf.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf
 install %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}.conf
 install %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/lighttpd.conf
 
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -76,37 +74,29 @@ rm -rf $RPM_BUILD_ROOT
 %webapp_unregister lighttpd %{_webapp}
 
 %triggerpostun -- %{name} < 6.5-2.1
-
 # nuke very-old config location (this mostly for Ra)
 if [ -f /etc/httpd/httpd.conf ]; then
-        sed -i -e "/^Include.*%{name}.conf/d" /etc/httpd/httpd.conf
+	sed -i -e "/^Include.*%{name}.conf/d" /etc/httpd/httpd.conf
 fi
 
 # migrate from httpd (apache2) config dir
 if [ -f /etc/httpd/%{name}.conf.rpmsave ]; then
-        cp -f %{_sysconfdir}/httpd.conf{,.rpmnew}
-        mv -f /etc/httpd/%{name}.conf.rpmsave %{_sysconfdir}/httpd.conf
+	cp -f %{_sysconfdir}/httpd.conf{,.rpmnew}
+	mv -f /etc/httpd/%{name}.conf.rpmsave %{_sysconfdir}/httpd.conf
 fi
 
 # migrate from apache-config macros
 if [ -f /etc/%{name}/apache.conf.rpmsave ]; then
-        if [ -d /etc/httpd/webapps.d ]; then
-         cp -f %{_sysconfdir}/httpd.conf{,.rpmnew}
-                cp -f /etc/%{name}/apache.conf.rpmsave %{_sysconfdir}/httpd.conf
-        fi
-        rm -f /etc/%{name}/apache.conf.rpmsave
+	if [ -d /etc/httpd/webapps.d ]; then
+		cp -f %{_sysconfdir}/httpd.conf{,.rpmnew}
+		cp -f /etc/%{name}/apache.conf.rpmsave %{_sysconfdir}/httpd.conf
+	fi
+	rm -f /etc/%{name}/apache.conf.rpmsave
 fi
 
 rm -f /etc/httpd/httpd.conf/99_%{name}.conf
 /usr/sbin/webapp register httpd %{_webapp}
 %service -q httpd reload
-
-
-
-
-
-// przeniesc do /webapps
-// praca do export i global...
 
 %files
 %defattr(644,root,root,755)
