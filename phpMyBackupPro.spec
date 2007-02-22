@@ -1,5 +1,5 @@
 # TODO
-# - webapps
+# - unpackaged: /usr/share/phpMyBackupPro/images/favicon.png
 Summary:	Web-based MySQL backup program, written in PHP
 Summary(pl.UTF-8):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
@@ -55,8 +55,9 @@ install %{name}/global_conf.php %{name}/config.php $RPM_BUILD_ROOT%{_sysconfdir}
 ln -sf %{_sysconfdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/config.php
 ln -sf %{_sysconfdir}/global_conf.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf.php
 
-install %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}.conf
-install %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/lighttpd.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/apache.conf
+install %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf
+install %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/lighttpd.conf
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -102,7 +103,10 @@ rm -f /etc/httpd/httpd.conf/99_%{name}.conf
 %defattr(644,root,root,755)
 %doc documentation/{GNU\ GPL.txt,INSTALL.txt,HISTORY.txt,SEVERAL_SERVERS.txt,SHELL_MODE.txt,UPGRADE.txt}
 %dir %{_sysconfdir}
-%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/apache.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/lighttpd.conf
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*.php
 %dir %{_mybackupdir}
 %{_mybackupdir}/export
 %{_mybackupdir}/language
