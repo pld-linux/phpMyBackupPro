@@ -3,24 +3,29 @@
 Summary:	Web-based MySQL backup program, written in PHP
 Summary(pl.UTF-8):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
-Version:	1.5
+Version:	2.0b
 Release:	1
 License:	GPL
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
-# Source0-md5:	4d2fe3aab2b17d42328aceda9d793dd5
+# Source0-md5:	bd41ce642bb9181c3f2546b09a0d074a
 Source1:	%{name}.conf
+Source2:        %{name}_lighttpd.conf
 URL:		http://www.phpmybackuppro.net/
 BuildRequires:	unzip
 Requires:	php(mysql)
 Requires:	php(pcre)
 Requires:	webserver
 Requires:	webserver(php)
+Requires:       webapps
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_mybackupdir	%{_datadir}/%{name}
-%define		_sysconfdir	/etc/%{name}
+%define         _webapps        /etc/webapps
+%define         _webapp         %{name}
+%define         _sysconfdir     %{_webapps}/%{_webapp}
+
 
 %description
 phpMyBackupPro is a web-based MySQL backup program, written in PHP.
@@ -44,49 +49,70 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_mybackupdir} \
 	$RPM_BUILD_ROOT{%{_sysconfdir},/etc/httpd}
 
-cp -af %{name}.v.%{version}/* $RPM_BUILD_ROOT%{_mybackupdir}
+cp -af %{name}/* $RPM_BUILD_ROOT%{_mybackupdir}
 rm -f $RPM_BUILD_ROOT%{_mybackupdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf.php
 
-install %{name}.v.%{version}/global_conf.php %{name}.v.%{version}/config.php $RPM_BUILD_ROOT%{_sysconfdir}
+install %{name}/global_conf.php %{name}/config.php $RPM_BUILD_ROOT%{_sysconfdir}
 ln -sf %{_sysconfdir}/config.php $RPM_BUILD_ROOT%{_mybackupdir}/config.php
 ln -sf %{_sysconfdir}/global_conf.php $RPM_BUILD_ROOT%{_mybackupdir}/global_conf.php
 
-install %{SOURCE1} $RPM_BUILD_ROOT/etc/httpd/%{name}.conf
+install %{SOURCE1} $RPM_BUILD_ROOT/%{_sysconfdir}/%{name}.conf
+install %{SOURCE2} $RPM_BUILD_ROOT/%{_sysconfdir}/lighttpd.conf
+
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post
-if [ -f /etc/httpd/httpd.conf ] && ! grep -q "^Include.*%{name}.conf" /etc/httpd/httpd.conf; then
-	echo "Include /etc/httpd/%{name}.conf" >> /etc/httpd/httpd.conf
-elif [ -d /etc/httpd/httpd.conf ]; then
-	ln -sf /etc/httpd/%{name}.conf /etc/httpd/httpd.conf/99_%{name}.conf
-fi
-if [ -f /var/lock/subsys/httpd ]; then
-	/usr/sbin/apachectl restart 1>&2
+%triggerin -- apache < 2.2.0, apache-base
+%webapp_register httpd %{_webapp}
+
+%triggerun -- apache < 2.2.0, apache-base
+%webapp_unregister httpd %{_webapp}
+
+%triggerin -- lighttpd
+%webapp_register lighttpd %{_webapp}
+
+%triggerun -- lighttpd
+%webapp_unregister lighttpd %{_webapp}
+
+%triggerpostun -- %{name} < 6.5-2.1
+
+# nuke very-old config location (this mostly for Ra)
+if [ -f /etc/httpd/httpd.conf ]; then
+        sed -i -e "/^Include.*%{name}.conf/d" /etc/httpd/httpd.conf
 fi
 
-%preun
-if [ "$1" = "0" ]; then
-	umask 027
-	if [ -d /etc/httpd/httpd.conf ]; then
-		rm -f /etc/httpd/httpd.conf/99_%{name}.conf
-	else
-		grep -v "^Include.*%{name}.conf" /etc/httpd/httpd.conf > \
-			/etc/httpd/httpd.conf.tmp
-		mv -f /etc/httpd/httpd.conf.tmp /etc/httpd/httpd.conf
-	fi
-	if [ -f /var/lock/subsys/httpd ]; then
-		/usr/sbin/apachectl restart 1>&2
-	fi
+# migrate from httpd (apache2) config dir
+if [ -f /etc/httpd/%{name}.conf.rpmsave ]; then
+        cp -f %{_sysconfdir}/httpd.conf{,.rpmnew}
+        mv -f /etc/httpd/%{name}.conf.rpmsave %{_sysconfdir}/httpd.conf
 fi
+
+# migrate from apache-config macros
+if [ -f /etc/%{name}/apache.conf.rpmsave ]; then
+        if [ -d /etc/httpd/webapps.d ]; then
+         cp -f %{_sysconfdir}/httpd.conf{,.rpmnew}
+                cp -f /etc/%{name}/apache.conf.rpmsave %{_sysconfdir}/httpd.conf
+        fi
+        rm -f /etc/%{name}/apache.conf.rpmsave
+fi
+
+rm -f /etc/httpd/httpd.conf/99_%{name}.conf
+/usr/sbin/webapp register httpd %{_webapp}
+%service -q httpd reload
+
+
+
+
+
+// przeniesc do /webapps
+// praca do export i global...
 
 %files
 %defattr(644,root,root,755)
-%doc documentation/{GNU\ GPL.txt,HISTORY.txt,SEVERAL_SERVERS.txt,SHELL_MODE.txt,UPGRADE.txt}
+%doc documentation/{GNU\ GPL.txt,INSTALL.txt,HISTORY.txt,SEVERAL_SERVERS.txt,SHELL_MODE.txt,UPGRADE.txt}
 %dir %{_sysconfdir}
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*
-%config(noreplace) %verify(not md5 mtime size) /etc/httpd/%{name}.conf
 %dir %{_mybackupdir}
 %{_mybackupdir}/export
 %{_mybackupdir}/language
