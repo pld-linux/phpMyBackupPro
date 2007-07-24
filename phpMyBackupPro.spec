@@ -3,12 +3,12 @@
 Summary:	Web-based MySQL backup program, written in PHP
 Summary(pl.UTF-8):	Oparty o PHP program do tworzenia kopii zapasowych baz MySQL
 Name:		phpMyBackupPro
-Version:	2.0b
+Version:	2.1
 Release:	1
 License:	GPL
 Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
-# Source0-md5:	bd41ce642bb9181c3f2546b09a0d074a
+# Source0-md5:	4f6371ec453d180585c657da9cf73c56
 Source1:	%{name}.conf
 Source2:        %{name}_lighttpd.conf
 URL:		http://www.phpmybackuppro.net/
