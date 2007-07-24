@@ -10,7 +10,7 @@ Group:		Applications/WWW
 Source0:	http://dl.sourceforge.net/phpmybackup/%{name}.v.%{version}.zip
 # Source0-md5:	4f6371ec453d180585c657da9cf73c56
 Source1:	%{name}.conf
-Source2:        %{name}_lighttpd.conf
+Source2:	%{name}_lighttpd.conf
 URL:		http://www.phpmybackuppro.net/
 BuildRequires:	unzip
 Requires:	php(mysql)
